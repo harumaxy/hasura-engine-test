@@ -1,0 +1,94 @@
+{
+  "resource_version": 8,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "postgres",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "public",
+              "name": "courses"
+            }
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "lesson_course"
+            }
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "lesson_course_junction"
+            }
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "lessons"
+            },
+            "array_relationships": [
+              {
+                "name": "courses",
+                "using": {
+                  "manual_configuration": {
+                    "remote_table": {
+                      "schema": "public",
+                      "name": "lesson_course_junction"
+                    },
+                    "insertion_order": null,
+                    "column_mapping": {
+                      "id": "id"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": false,
+            "database_url": "postgres://postgres:postgres@postgres:5432/postgres",
+            "isolation_level": "read-committed"
+          }
+        }
+      }
+    ],
+    "query_collections": [
+      {
+        "name": "allowed-queries",
+        "definition": {
+          "queries": [
+            {
+              "name": "ListLessons",
+              "query": "query ListLessons{\n  lessons(limit: 10, offset: 0) {\n    id\n    live_status\n    name\n    start_at\n    subject_area\n    end_at\n    courses {\n      class_\n      course\n    }\n  }\n}"
+            }
+          ]
+        }
+      }
+    ],
+    "allowlist": [
+      {
+        "collection": "allowed-queries"
+      }
+    ],
+    "rest_endpoints": [
+      {
+        "definition": {
+          "query": {
+            "collection_name": "allowed-queries",
+            "query_name": "ListLessons"
+          }
+        },
+        "url": "lessons",
+        "methods": ["GET"],
+        "name": "ListLessons",
+        "comment": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+
+object Lesson{
+    id: int
+    ...
+}
+
+' Junction Table
+object LessonCourseJunction{
+    lesson_id: int
+    course_id: int
+}
+
+object Course {
+    id: string
+    course: string
+    class_: string
+}
+
+Lesson "1" *- "n" LessonCourseJunction 
+LessonCourseJunction "n" -* "1" Course
